@@ -9,23 +9,46 @@ type Game struct {
 	board   Board
 	players []Player
 	dice    Dice
+
+	inputReader InputReader
 }
 
-func NewGame(board Board, dice Dice) Game {
+func NewGame(board Board, dice Dice, inputReader InputReader) Game {
 	return Game{
-		board:   board,
-		players: make([]Player, 0),
-		dice:    dice,
+		board:       board,
+		players:     make([]Player, 0),
+		dice:        dice,
+		inputReader: inputReader,
 	}
 }
 
 func (g *Game) StartGame() error {
 	fmt.Println("Starting the Game!")
 
-	err := g.takeInput()
+	snakes, ladders, players, err := g.inputReader.Read()
 	if err != nil {
 		return err
 	}
+
+	for i := 0; i < len(snakes); i++ {
+		if err := g.board.PutSnake(snakes[i]); err != nil {
+			return err
+		}
+
+	}
+
+	for i := 0; i < len(ladders); i++ {
+		if err := g.board.PutLadder(ladders[i]); err != nil {
+			return err
+		}
+	}
+
+	g.players = append(g.players, players...)
+
+	//err := g.takeInput()
+	//if err != nil {
+	//	return err
+	//}
 
 	g.play()
 
