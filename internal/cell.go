@@ -1,6 +1,8 @@
-package main
+package internal
 
-import "errors"
+import (
+	"errors"
+)
 
 type Cell struct {
 	id      int
