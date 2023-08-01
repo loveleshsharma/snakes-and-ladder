@@ -12,7 +12,7 @@ import (
 */
 
 func main() {
-	game := internal.NewGame(internal.NewBoard(), internal.NewDice(), internal.NewCLIReader())
+	game := internal.NewGame(internal.NewBoard(), internal.NewDice(), internal.NewFileReader("./test-files/file1.txt"))
 
 	if err := game.StartGame(); err != nil {
 		fmt.Println(err)
